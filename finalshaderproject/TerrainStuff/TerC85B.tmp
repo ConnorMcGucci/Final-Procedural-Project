@@ -1,0 +1,75 @@
+[gd_scene load_steps=5 format=3 uid="uid://cbwsec6nl05fu"]
+
+[ext_resource type="Script" path="res://TerrainStuff/TerrainGeneration.gd" id="1_oidtc"]
+[ext_resource type="PackedScene" uid="uid://dd5d5blsfafpp" path="res://item_spawner.tscn" id="2_hcsj8"]
+[ext_resource type="PackedScene" uid="uid://domhm87hbhbg1" path="res://demo/components/Player.tscn" id="3_vqq4k"]
+
+[sub_resource type="GDScript" id="GDScript_7ss77"]
+script/source = "extends Node3D
+
+var terrainGeneration : Node
+var terrain : Terrain3D
+var point : Vector3
+var terrainHeight : Vector3
+var check_timer : Timer
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	terrainGeneration = get_node(\".\")
+	if terrainGeneration == null:
+		print(\"Root script is null\")
+	else:
+		print(\"Root script is found!\")
+		
+	terrain = terrainGeneration.terrain
+	
+	if terrain != null and terrain.is_valid():
+		print(\"Terrain is valid!\")
+		getHeightMap()
+	else:
+		print(\"Terrain isn't valid!\")
+		
+	# Create and start a timer to delay the terrain validity check
+	check_timer = Timer.new()
+	check_timer.one_shot = true
+	check_timer.wait_time = 0.1  # Delay by 0.1 seconds (you can adjust this)
+	add_child(check_timer)
+	check_timer.start()
+
+func _on_check_timer_timeout() -> void:
+	# Now that the timer has timed out, we check if the terrain is valid
+	if terrain != null and terrain.is_valid():
+		print(\"Terrain is valid!\")
+		getHeightMap()
+	else:
+		print(\"Terrain still not valid after delay.\")
+
+func getHeightMap() -> void:
+	var region: Terrain3DRegion = terrain.data.get_regionp(global_position)
+	if region and not region.is_deleted():
+		var img: Image = region.get_height_map()
+		for y in img.get_height():
+			for x in img.get_width():
+				var height: float = img.get_pixel(x, y).r
+				print(\"Height at x: \", x, \" y: \", y, \" is: \", height)
+"
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_oidtc")
+
+[node name="Raycasting" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1000, 0)
+
+[node name="ItemSpawner" parent="." instance=ExtResource("2_hcsj8")]
+
+[node name="Player" parent="." instance=ExtResource("3_vqq4k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 317.176, 150.302, 0)
+MOVE_SPEED = 1000.0
+first_person = true
+collision_enabled = false
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.809694, -0.586853, 0, 0.586853, 0.809694, 0, 0, 0, 1, 141.567, 540.903, 0)
+
+[node name="Node3D" type="Node3D" parent="."]
+script = SubResource("GDScript_7ss77")

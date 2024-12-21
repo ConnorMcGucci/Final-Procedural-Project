@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dj44nra2pf21k"]
+
+[ext_resource type="Script" path="res://TerrainStuff/ItemSpawnerAligner.gd" id="1_wi66g"]
+
+[node name="ItemSpawnerAligner" type="Node3D"]
+script = ExtResource("1_wi66g")

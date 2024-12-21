@@ -1,0 +1,41 @@
+[gd_scene load_steps=10 format=3 uid="uid://cbwsec6nl05fu"]
+
+[ext_resource type="Script" path="res://TerrainStuff/TerrainGeneration.gd" id="1_oidtc"]
+[ext_resource type="PackedScene" uid="uid://dd5d5blsfafpp" path="res://item_spawner.tscn" id="2_hcsj8"]
+[ext_resource type="PackedScene" uid="uid://domhm87hbhbg1" path="res://demo/components/Player.tscn" id="3_vqq4k"]
+[ext_resource type="Texture2D" uid="uid://c8nbwjcrvneho" path="res://Materials/Sky_basecolor.png" id="4_xruii"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_xcwy5"]
+panorama = ExtResource("4_xruii")
+
+[sub_resource type="Sky" id="Sky_ndn8h"]
+sky_material = SubResource("PanoramaSkyMaterial_xcwy5")
+
+[sub_resource type="Environment" id="Environment_noedh"]
+background_mode = 2
+sky = SubResource("Sky_ndn8h")
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_mis46"]
+
+[sub_resource type="Compositor" id="Compositor_e0lcp"]
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_oidtc")
+
+[node name="Raycasting" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1000, 0)
+
+[node name="ItemSpawner" parent="." instance=ExtResource("2_hcsj8")]
+
+[node name="Player" parent="." instance=ExtResource("3_vqq4k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 317.176, 150.302, 0)
+MOVE_SPEED = 1000.0
+first_person = true
+collision_enabled = false
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_noedh")
+camera_attributes = SubResource("CameraAttributesPractical_mis46")
+compositor = SubResource("Compositor_e0lcp")

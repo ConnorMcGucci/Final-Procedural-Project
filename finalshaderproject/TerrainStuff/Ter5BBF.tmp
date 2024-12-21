@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://cbwsec6nl05fu"]
+
+[ext_resource type="Script" path="res://TerrainStuff/TerrainGeneration.gd" id="1_oidtc"]
+[ext_resource type="PackedScene" uid="uid://dd5d5blsfafpp" path="res://item_spawner.tscn" id="2_hcsj8"]
+[ext_resource type="PackedScene" uid="uid://domhm87hbhbg1" path="res://demo/components/Player.tscn" id="3_vqq4k"]
+[ext_resource type="PackedScene" uid="uid://dj44nra2pf21k" path="res://item_spawner_aligner.tscn" id="4_o23w5"]
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_oidtc")
+
+[node name="Raycasting" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1000, 0)
+
+[node name="ItemSpawner" parent="." instance=ExtResource("2_hcsj8")]
+
+[node name="Player" parent="." instance=ExtResource("3_vqq4k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 317.176, 150.302, 0)
+MOVE_SPEED = 1000.0
+first_person = true
+collision_enabled = false
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.809694, -0.586853, 0, 0.586853, 0.809694, 0, 0, 0, 1, 141.567, 540.903, 0)
+
+[node name="ItemSpawnerAligner" parent="." instance=ExtResource("4_o23w5")]
+objectToSpawn = ExtResource("2_hcsj8")
