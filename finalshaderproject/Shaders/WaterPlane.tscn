@@ -1,0 +1,62 @@
+[gd_scene load_steps=10 format=3 uid="uid://dg8rxixeam8ad"]
+
+[ext_resource type="Shader" path="res://Shaders/Water.gdshader" id="1_jvmwv"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_kt5nu"]
+subdivide_width = 200
+subdivide_depth = 200
+orientation = 1
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_61q01"]
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4k4sp"]
+seamless = true
+as_normal_map = true
+bump_strength = 1.5
+noise = SubResource("FastNoiseLite_61q01")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_28vo6"]
+seed = 25
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_afn2d"]
+seamless = true
+as_normal_map = true
+bump_strength = 1.5
+noise = SubResource("FastNoiseLite_28vo6")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_eh083"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_js2v8"]
+seamless = true
+noise = SubResource("FastNoiseLite_eh083")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qxhb6"]
+render_priority = 0
+shader = ExtResource("1_jvmwv")
+shader_parameter/albedo = Color(0, 0.262196, 0.403139, 1)
+shader_parameter/albedo2 = Color(0, 0.662745, 0, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.02
+shader_parameter/waveDirection = Vector2(2, 0)
+shader_parameter/waveDirection2 = Vector2(0, 1)
+shader_parameter/timeScale = 0.025
+shader_parameter/noiseScale = 10.0
+shader_parameter/heightScale = 0.15
+shader_parameter/colorDeep = Color(0.0288811, 0.314153, 0.482759, 1)
+shader_parameter/colorShallow = Color(6.73831e-07, 0.709661, 0.720397, 1)
+shader_parameter/beersLaw = 2.0
+shader_parameter/depthOffset = -0.75
+shader_parameter/edgeScale = 0.1
+shader_parameter/near = 1.0
+shader_parameter/far = 10.0
+shader_parameter/edgeColor = Color(0.180005, 0.180005, 0.180005, 1)
+shader_parameter/wave = SubResource("NoiseTexture2D_js2v8")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_4k4sp")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_afn2d")
+
+[node name="WaterPlane" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0172743, 0.0288532, -0.00296658)
+mesh = SubResource("QuadMesh_kt5nu")
+surface_material_override/0 = SubResource("ShaderMaterial_qxhb6")

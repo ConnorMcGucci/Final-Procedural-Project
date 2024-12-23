@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-@export var MOVE_SPEED: float = 50.0
+@export var MOVE_SPEED: float = 10.0
 @export var first_person: bool = false:
 	set(p_value):
 		first_person = p_value
@@ -64,6 +64,8 @@ func _input(p_event: InputEvent) -> void:
 				first_person = !first_person
 			elif p_event.keycode == KEY_C:
 				collision_enabled = !collision_enabled
+			elif p_event.keycode == KEY_ESCAPE:
+				get_tree().quit()
 
 		# Reset vertical velocity when up/down keys are released
 		elif p_event.keycode in [KEY_Q, KEY_E, KEY_SPACE, KEY_SHIFT]:
